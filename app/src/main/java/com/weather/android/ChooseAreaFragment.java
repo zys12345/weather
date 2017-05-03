@@ -1,6 +1,7 @@
 package com.weather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,11 @@ public class ChooseAreaFragment extends Fragment {
         }else if(currentLevel == LEVEL_CITY){
             selectedCity = cityList.get(position);
             queryCounties();
+        }else if(currentLevel == LEVEL_COUNTY){
+            Intent intent = new Intent(getActivity(),WeatherActivity.class);
+            intent.putExtra("weatherId",countyList.get(position).getWeatherId());
+            startActivity(intent);
+            getActivity().finish();
         }
     }
 
@@ -119,7 +125,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_PROVINCE;
         }else {
-            String address = "http://api.jisuapi.com/area/query?parentid=0&appkey=22b28b43231aad3f";
+            String address = "http://guolin.tech/api/china";
             queryFromServer(address,"province");
         }
     }
@@ -137,7 +143,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_CITY;
         }else {
-            String address = "http://api.jisuapi.com/area/query?parentid=" + selectedProvince.getProvinceCode() + "&appkey=22b28b43231aad3f";
+            String address = "http://guolin.tech/api/china/" + selectedProvince.getProvinceCode();
             queryFromServer(address,"city");
         }
     }
@@ -155,7 +161,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
         }else {
-            String address = "http://api.jisuapi.com/area/query?parentid=" + selectedCity.getCityCode() + "&appkey=22b28b43231aad3f";
+            String address = "http://guolin.tech/api/china/" + selectedProvince.getProvinceCode() + "/" + selectedCity.getCityCode();
             queryFromServer(address,"county");
         }
     }
